@@ -1,0 +1,183 @@
+---
+name: skill-name-in-kebab-case
+description: [What this skill does in one phrase] — [when to use it, with specific trigger phrases the user would actually say]. Include file types if relevant. Trigger this skill whenever the user [paraphrased intent] — even if they don't explicitly say "[skill name]." Do NOT trigger for [unrelated cases that share keywords].
+license: MIT
+# compatibility: Requires Python 3.10+, network access. (1–500 chars. Delete if no special env needs.)
+# allowed-tools: "Bash(python:*) Bash(npm:*) WebFetch"  # Restrict tool access if needed.
+metadata:
+  author: your-name
+  version: 0.1.0
+  # category: productivity
+  # tags: [tag-1, tag-2]
+  # mcp-server: server-name        # if skill depends on a specific MCP server
+  # documentation: https://example.com/docs
+  # support: support@example.com
+---
+
+# Skill Name
+
+One-sentence pitch. What outcome does the user get?
+
+## Why This Skill Exists
+
+Explain the problem this skill solves and what makes it valuable. Why should Claude use the structured workflow here instead of improvising? Today's models are smart — give them the *why* and they'll follow more reliably than they would with rigid rules.
+
+Keep this short (3–6 sentences).
+
+## When to Use
+
+This is reinforcement of the description for Claude's benefit when the body loads. Be concrete.
+
+**Use when:**
+- User says: "[trigger phrase 1]"
+- User says: "[trigger phrase 2]"
+- User uploads a [file type] and asks for [outcome]
+- User describes: [scenario in plain language]
+
+**Do NOT use when:**
+- The request is a simple lookup (handle directly)
+- The request belongs to [adjacent skill] instead
+- [Other near-miss case]
+
+## Critical
+
+(Use this section for must-not-skip rules. The guide recommends `## Important` or `## Critical` headers — NOT burying critical rules inside prose. Repeat key points if needed. Delete this section if the skill has no hard rules.)
+
+**CRITICAL: Before [main action], verify:**
+- [Precondition 1]
+- [Precondition 2]
+- [Precondition 3]
+
+For deterministic validations, prefer bundling a script in `scripts/` over relying on language interpretation — code is reliable, prose isn't.
+
+## Instructions
+
+Write in imperative form. Number steps when order matters.
+
+### Step 1: [First Major Action]
+
+What happens here, what input is needed, what output is produced.
+
+```bash
+# Example command if scripts are bundled
+python scripts/do_thing.py --input {filename}
+```
+
+Expected output: [describe success state in one line]
+
+### Step 2: [Second Major Action]
+
+Before performing [action], consult `references/<file>.md` for:
+- [Topic 1 — e.g., rate limits]
+- [Topic 2 — e.g., schema details]
+- [Topic 3 — e.g., error codes]
+
+(This is the "progressive disclosure" pattern: keep SKILL.md lean, push detail to `references/` and link with explicit pointers about *when* to read it.)
+
+### Step 3: [...]
+
+[...]
+
+## Output Format
+
+ALWAYS use this exact structure (adjust to your skill):
+
+```markdown
+# [Title]
+## [Section 1]
+## [Section 2]
+## [Section 3]
+```
+
+If output is non-text (file, chart, structured data), describe shape:
+- File type: `.docx` / `.csv` / `.png`
+- Schema: `{field: type, ...}`
+- Naming convention: `<topic>-<date>.ext`
+
+## Examples
+
+### Example 1 — Common case
+
+**Input:** "[sample user prompt]"
+
+**Actions:**
+1. [What Claude does first]
+2. [What Claude does second]
+3. [What Claude does third]
+
+**Output:** [expected result, abbreviated]
+
+### Example 2 — Edge case
+
+**Input:** "[trickier user prompt]"
+
+**Actions:**
+1. [How Claude handles it]
+
+**Output:** [expected result]
+
+## Troubleshooting
+
+### Issue: [Common error or failure mode]
+**Cause:** [Why it happens]
+**Solution:** [How to handle it]
+
+### Issue: [Another common problem]
+**Cause:** [Why]
+**Solution:** [Fix]
+
+## Bundled Resources
+
+(Delete this section if no bundled files.)
+
+- `scripts/<name>.py` — [what it does, when to call it]
+- `references/<name>.md` — [what's in it, when to read it] (load only when needed)
+- `assets/<name>` — [template/icon/font used in output]
+
+For large reference files (>300 lines), include a table of contents in the reference itself so Claude can jump to the right section.
+
+---
+
+## Authoring Notes (delete before publishing)
+
+This template follows the Anthropic Agent Skills standard. Quick checklist before publishing:
+
+**Frontmatter:**
+- [ ] `name` is kebab-case, matches folder name, no "claude"/"anthropic" prefix (reserved)
+- [ ] `description` includes WHAT the skill does AND WHEN to use it
+- [ ] `description` includes specific trigger phrases the user would type
+- [ ] `description` is under 1024 characters
+- [ ] No XML angle brackets (`<` `>`) anywhere in frontmatter (security restriction)
+- [ ] Description is slightly "pushy" — explicitly says "trigger even when user doesn't say X" to fight undertriggering
+- [ ] Has `---` delimiters at top and bottom
+- [ ] No unclosed quotes in description
+
+**Body:**
+- [ ] Instructions are specific and actionable, not vague ("validate the data" → "run `python scripts/validate.py`")
+- [ ] Critical rules use `## Critical` or `## Important` callouts at the TOP — not buried in prose
+- [ ] Ambiguous phrasing rewritten ("make sure things are validated properly" → explicit `CRITICAL:` list)
+- [ ] At least 2 examples (common + edge case)
+- [ ] Troubleshooting covers ≥2 common failure modes
+- [ ] Heavy reference material moved to `references/` with explicit pointers about *when* to read each
+- [ ] For deterministic validations, bundle a script in `scripts/` rather than relying on language
+- [ ] Total SKILL.md under ~500 lines (5,000 words hard ceiling per Anthropic guide)
+
+**Folder:**
+- [ ] Folder name matches `name` field exactly (kebab-case)
+- [ ] `SKILL.md` filename is exact case (not `Skill.md`, `SKILL.MD`, `skill.md`)
+- [ ] No `README.md` inside skill folder (use repo-level README for humans)
+- [ ] `evals/cases.md` exists with ≥3 trigger tests + ≥3 behavior tests
+
+**Triggering quality (after writing):**
+- [ ] Test 5 obvious-trigger prompts — should fire
+- [ ] Test 5 paraphrased prompts — should fire
+- [ ] Test 5 near-miss prompts (share keywords, different intent) — should NOT fire
+- [ ] Ask Claude in fresh session: "When would you use the [skill name] skill?" — answer should match the description's intent
+
+If undertriggering: add specific phrases and "trigger even if..." language to description.
+If overtriggering: add explicit "Do NOT use when..." negatives to description.
+
+**Reference material:**
+- `material/the-complete-guide-to-building-skill-for-claude.md` — Anthropic's official guide (in this repo)
+- `/skill-creator` — interactive skill builder; use for design + iteration
+- Anthropic Agent Skills standard — open-source spec; skills portable across platforms
