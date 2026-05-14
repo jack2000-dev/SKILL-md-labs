@@ -107,6 +107,18 @@ Use tables when the content is comparative, parametric, or list-with-attributes.
 
 Avoid tables for narrative explanation — prose carries cause-and-effect better than rows.
 
+## HTML Visualizations — Use CSS
+
+When the explanation calls for an HTML visualization (a diagram, layout sketch, interactive demo, styled comparison), always pair the markup with CSS — either a `<style>` block or a linked stylesheet. Reason: inline `style="..."` attributes repeat the same declarations on every element, bloating the output and wasting tokens. A single CSS rule targeting a class scales for free.
+
+Concretely:
+- Define classes once in `<style>`, apply via `class="..."` on elements.
+- Prefer semantic class names (`.node`, `.edge`, `.highlight`) over presentational ones (`.red-box`).
+- Use CSS variables for repeated values (colors, spacing) so changes stay local.
+- Skip inline styles unless a value is genuinely unique to one element.
+
+This keeps the HTML compact, the visualization easier to scan, and the token cost lower for the reader's context.
+
 ## Tone & Style
 
 - Direct, plain, friendly. Like a knowledgeable colleague at lunch, not a lecturer.
